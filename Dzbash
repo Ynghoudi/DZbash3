@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -d "$1" ] || [ ! -d "$2" ]; then
+  echo "Один или оба каталога не найдены!"
+  exit 1
+fi
+
+dir1_files=$(find "$1" -type f -print0 | xargs -0)
+dir2_files=$(find "$2" -type f -print0 | xargs -0)
+
+echo "Файлы, присутствующие в $1, но отсутствующие в $2:"
+comm -23 <(echo "$dir1_files" | sort) <(echo "$dir2_files" | sort)
+
+echo ""
+
+echo "Файлы, присутствующие в $2, но отсутствующие в $1:"
+comm -13 <(echo "$dir1_files" | sort) <(echo "$dir2_files" | sort)
